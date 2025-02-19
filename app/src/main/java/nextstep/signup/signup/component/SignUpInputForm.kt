@@ -1,5 +1,7 @@
 package nextstep.signup.signup.component
 
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsFocusedAsState
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.MaterialTheme
@@ -7,6 +9,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -32,11 +35,19 @@ fun SignUpInputForm(
     modifier: Modifier = Modifier,
     visualTransformation: VisualTransformation = VisualTransformation.None,
 ) {
-    var isFocused by remember { mutableStateOf(false) }
+    val interactionSource = remember { MutableInteractionSource() }
+    val isFocused = interactionSource.collectIsFocusedAsState().value
+    var hasEverBeenFocused by remember { mutableStateOf(false) }
+
+    LaunchedEffect(hasEverBeenFocused) {
+        if (isFocused) {
+            hasEverBeenFocused = true // 포커스를 받으면 true로 설정
+        }
+    }
+
     TextField(
         value = inputText,
         onValueChange = { text ->
-            isFocused = true
             onValueChange(text)
         },
         label = { Text(placeHolderText) },
@@ -51,16 +62,17 @@ fun SignUpInputForm(
             focusedContainerColor = Color(0xFFE3E8F1),
             unfocusedContainerColor = Color(0xFFE3E8F1)
         ),
-        isError = isFocused && errorMessage.isNotEmpty(),
+        isError = hasEverBeenFocused && errorMessage.isNotEmpty(),
         supportingText = {
-            if (isFocused && errorMessage.isNotEmpty()) {
+            if (hasEverBeenFocused && errorMessage.isNotEmpty()) {
                 Text(
                     text = errorMessage,
                     color = MaterialTheme.colorScheme.error,
                     style = MaterialTheme.typography.bodySmall,
                 )
             }
-        }
+        },
+        interactionSource = interactionSource
     )
 }
 
