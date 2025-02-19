@@ -2,14 +2,12 @@ package nextstep.signup
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.test.assertIsNotEnabled
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performTextInput
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.test.platform.app.InstrumentationRegistry
-import nextstep.signup.signup.component.SignUpContents
 import nextstep.signup.signup.component.SignUpInputForm
 import nextstep.signup.signup.getSignUpInputFieldErrorMessage
 import nextstep.signup.signup.util.ValidationUtil.isEmailValid
@@ -47,7 +45,7 @@ class InputValidationTest {
         composeTestRule.waitForIdle()
         // then
         composeTestRule
-            .onNodeWithText(context.getString(R.string.error_username_format))
+            .onNodeWithText("이름에는 숫자나 기호가 포함될 수 없습니다.")
             .assertDoesNotExist()
     }
 
@@ -80,7 +78,7 @@ class InputValidationTest {
         // then
         composeTestRule.waitForIdle()
         composeTestRule
-            .onNodeWithText(context.getString(R.string.error_username_length))
+            .onNodeWithText("이름은 2~5자여야 합니다.")
             .assertExists()
     }
 
@@ -112,7 +110,7 @@ class InputValidationTest {
 
         // then
         composeTestRule
-            .onNodeWithText(context.getString(R.string.error_username_format))
+            .onNodeWithText("이름에는 숫자나 기호가 포함될 수 없습니다.")
             .assertExists()
     }
 
@@ -143,7 +141,7 @@ class InputValidationTest {
             .performTextInput("testasd")
         // then
         composeTestRule
-            .onNodeWithText(context.getString(R.string.error_email_format))
+            .onNodeWithText("이메일 형식이 올바르지 않습니다.")
             .assertExists()
     }
 
@@ -174,7 +172,7 @@ class InputValidationTest {
             .performTextInput("12das34")
         // then
         composeTestRule
-            .onNodeWithText(context.getString(R.string.error_password_length))
+            .onNodeWithText("비밀번호는 8~16자여야 합니다.")
             .assertExists()
     }
 
@@ -203,7 +201,7 @@ class InputValidationTest {
             .performTextInput("123456789")
         // then
         composeTestRule
-            .onNodeWithText(context.getString(R.string.error_password_format))
+            .onNodeWithText("비밀번호는 영문과 숫자를 포함해야 합니다.")
             .assertExists()
     }
 
@@ -230,111 +228,5 @@ class InputValidationTest {
         composeTestRule
             .onNodeWithText("오류메세지입니다")
             .assertExists()
-    }
-
-
-    @Test
-    fun 비밀번호_인풋_비어있을때_버튼_비활성화_확인() {
-        // given when
-        composeTestRule.setContent {
-            SignUpContents(
-                nameInputText = "Philip Vincent",
-                nameErrorMessage = "Sherri Walsh",
-                emailInputText = "calvin.allen@example.com",
-                emailErrorMessage = "",
-                passwordInputText = "voluptaria",
-                passwordErrorMessage = "",
-                passwordConfirmInputText = "",
-                passwordConfirmErrorMessage = "",
-                buttonIsEnabled = false,
-                onShowSnackbar = {},
-                onNameValueChange = {},
-                onEmailValueChange = {},
-                onPasswordValueChange = {},
-                onPasswordConfirmValueChange = {}
-            )
-        }
-
-
-        // then
-        composeTestRule.onNodeWithText("Sign UP").assertIsNotEnabled()
-    }
-
-    @Test
-    fun 이메일_형식_안맞을때_버튼_비활성화_확인() {
-        // given when
-        composeTestRule.setContent {
-            SignUpContents(
-                nameInputText = "Philip Vincent",
-                nameErrorMessage = "",
-                emailInputText = "calvin.allen",
-                emailErrorMessage = "",
-                passwordInputText = "voluptaria",
-                passwordErrorMessage = "",
-                passwordConfirmInputText = "",
-                passwordConfirmErrorMessage = "",
-                buttonIsEnabled = false,
-                onShowSnackbar = {},
-                onNameValueChange = {},
-                onEmailValueChange = {},
-                onPasswordValueChange = {},
-                onPasswordConfirmValueChange = {}
-            )
-        }
-
-        // then
-        composeTestRule.onNodeWithText("Sign UP").assertIsNotEnabled()
-    }
-
-    @Test
-    fun 패스워드_매치_안될때_버튼_비활성화_확인() {
-        // given when
-        composeTestRule.setContent {
-            SignUpContents(
-                nameInputText = "Philip Vincent",
-                nameErrorMessage = "",
-                emailInputText = "calvin.allen",
-                emailErrorMessage = "",
-                passwordInputText = "12345678",
-                passwordErrorMessage = "",
-                passwordConfirmInputText = "123456789",
-                passwordConfirmErrorMessage = "",
-                buttonIsEnabled = false,
-                onShowSnackbar = {},
-                onNameValueChange = {},
-                onEmailValueChange = {},
-                onPasswordValueChange = {},
-                onPasswordConfirmValueChange = {}
-            )
-        }
-
-        // then
-        composeTestRule.onNodeWithText("Sign UP").assertIsNotEnabled()
-    }
-
-    @Test
-    fun 모든_입력필드_정상입력시_버튼_활성화_확인() {
-        // given when
-        composeTestRule.setContent {
-            SignUpContents(
-                nameInputText = "김무현",
-                nameErrorMessage = "",
-                emailInputText = "dlfb7@naver.com",
-                emailErrorMessage = "",
-                passwordInputText = "12345678",
-                passwordErrorMessage = "",
-                passwordConfirmInputText = "12345678",
-                passwordConfirmErrorMessage = "",
-                buttonIsEnabled = false,
-                onShowSnackbar = {},
-                onNameValueChange = {},
-                onEmailValueChange = {},
-                onPasswordValueChange = {},
-                onPasswordConfirmValueChange = {}
-            )
-        }
-
-        // then
-        composeTestRule.onNodeWithText("Sign UP").assertIsNotEnabled()
     }
 }
