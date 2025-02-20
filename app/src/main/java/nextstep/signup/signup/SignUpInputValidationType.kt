@@ -1,6 +1,6 @@
 package nextstep.signup.signup
 
-enum class SignUpValidationType {
+enum class SignUpInputValidationType {
     USERNAME_LENGTH_ERROR,
     USERNAME_FORMAT_ERROR,
     EMAIL_FORMAT_ERROR,

@@ -1,69 +1,69 @@
 package nextstep.signup.signup.util
 
-import nextstep.signup.signup.SignUpValidationType
+import nextstep.signup.signup.SignUpInputValidationType
 
 object ValidationUtil {
     private val USERNAME_REGEX = "^[a-zA-Z가-힣]+$".toRegex()
     private val EMAIL_REGEX = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$".toRegex()
     private val PASSWORD_REGEX = "^(?=.*[a-zA-Z])(?=.*[0-9]).{8,16}$".toRegex()
 
-    fun isNameValid(username: String): SignUpValidationType {
+    fun isNameValid(username: String): SignUpInputValidationType {
         return when {
             username.length < 2 || username.length > 5 -> {
-                SignUpValidationType.USERNAME_LENGTH_ERROR
+                SignUpInputValidationType.USERNAME_LENGTH_ERROR
             }
 
             !username.matches(USERNAME_REGEX) -> {
-                SignUpValidationType.USERNAME_FORMAT_ERROR
+                SignUpInputValidationType.USERNAME_FORMAT_ERROR
             }
 
             else -> {
-                SignUpValidationType.VALID
+                SignUpInputValidationType.VALID
             }
         }
     }
 
-    fun isEmailValid(email: String): SignUpValidationType {
+    fun isEmailValid(email: String): SignUpInputValidationType {
         return when {
 
             !email.matches(EMAIL_REGEX) -> {
-                SignUpValidationType.EMAIL_FORMAT_ERROR
+                SignUpInputValidationType.EMAIL_FORMAT_ERROR
             }
 
             else -> {
-                SignUpValidationType.VALID
+                SignUpInputValidationType.VALID
             }
         }
     }
 
-    fun isPasswordValid(password: String): SignUpValidationType {
+    fun isPasswordValid(password: String): SignUpInputValidationType {
         return when {
             password.length < 8 || password.length > 16 -> {
-                SignUpValidationType.PASSWORD_LENGTH_ERROR
+                SignUpInputValidationType.PASSWORD_LENGTH_ERROR
             }
 
             !password.matches(PASSWORD_REGEX) -> {
-                SignUpValidationType.PASSWORD_FORMAT_ERROR
+                SignUpInputValidationType.PASSWORD_FORMAT_ERROR
             }
 
             else -> {
-                SignUpValidationType.VALID
+                SignUpInputValidationType.VALID
             }
         }
     }
 
-    fun isPasswordMatch(password: String, passwordConfirm: String): SignUpValidationType {
+    fun isPasswordMatch(password: String, passwordConfirm: String): SignUpInputValidationType {
         return when {
             password.isEmpty() || passwordConfirm.isEmpty() -> {
-                SignUpValidationType.VALID
+                SignUpInputValidationType.VALID
             }
 
             password != passwordConfirm -> {
-                SignUpValidationType.PASSWORD_MISMATCH_ERROR
+                SignUpInputValidationType.PASSWORD_MISMATCH_ERROR
             }
 
             else -> {
-                SignUpValidationType.VALID
+                SignUpInputValidationType.VALID
             }
         }
     }
