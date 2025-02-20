@@ -16,24 +16,13 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import nextstep.signup.R
+import nextstep.signup.signup.model.SignUpState
 import nextstep.signup.ui.theme.SignupTheme
 
 @Composable
 fun SignUpContents(
-    nameInputText: String,
-    nameErrorMessage: String,
-    emailInputText: String,
-    emailErrorMessage: String,
-    passwordInputText: String,
-    passwordErrorMessage: String,
-    passwordConfirmInputText: String,
-    passwordConfirmErrorMessage: String,
-    buttonIsEnabled: Boolean,
+    signUpState: SignUpState,
     onShowSnackbar: (String) -> Unit,
-    onNameValueChange: (String) -> Unit,
-    onEmailValueChange: (String) -> Unit,
-    onPasswordValueChange: (String) -> Unit,
-    onPasswordConfirmValueChange: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -43,46 +32,46 @@ fun SignUpContents(
     ) {
         val context = LocalContext.current
 
-
         SignUpInputForm(
             placeHolderText = stringResource(R.string.signup_main_input_name),
             keyboardType = KeyboardType.Text,
-            inputText = nameInputText,
+            inputText = signUpState.name,
             onValueChange = { newText ->
-                onNameValueChange(newText)
+                signUpState.updateName(newText)
             },
-            errorMessage = nameErrorMessage
+            errorMessage = signUpState.nameErrorMessage
         )
 
         SignUpInputForm(
             placeHolderText = stringResource(R.string.signup_main_input_email),
             keyboardType = KeyboardType.Text,
-            inputText = emailInputText,
+            inputText = signUpState.email,
             onValueChange = { newText ->
-                onEmailValueChange(newText)
-            }, errorMessage = emailErrorMessage
+                signUpState.updateEmail(newText)
+            },
+            errorMessage = signUpState.emailErrorMessage
         )
 
         SignUpInputForm(
             placeHolderText = stringResource(R.string.signup_main_input_password),
             keyboardType = KeyboardType.Password,
             visualTransformation = PasswordVisualTransformation(),
-            inputText = passwordInputText,
+            inputText = signUpState.password,
             onValueChange = { newText ->
-                onPasswordValueChange(newText)
+                signUpState.updatePassword(newText)
             },
-            errorMessage = passwordErrorMessage
+            errorMessage = signUpState.passwordErrorMessage
         )
 
         SignUpInputForm(
             placeHolderText = stringResource(R.string.signup_main_input_password_confirm),
             keyboardType = KeyboardType.Password,
             visualTransformation = PasswordVisualTransformation(),
-            inputText = passwordConfirmInputText,
+            inputText = signUpState.passwordConfirm,
             onValueChange = { newText ->
-                onPasswordConfirmValueChange(newText)
+                signUpState.updatePasswordConfirm(newText)
             },
-            errorMessage = passwordConfirmErrorMessage
+            errorMessage = signUpState.passwordConfirmErrorMessage
         )
 
         SignUpButton(
@@ -90,7 +79,7 @@ fun SignUpContents(
                 .fillMaxWidth()
                 .height(50.dp),
             buttonTitle = stringResource(R.string.signup_main_signtup_button),
-            enabled = buttonIsEnabled,
+            enabled = signUpState.buttonIsEnabled,
             onClick = { onShowSnackbar(context.getString(R.string.signup_finish)) })
     }
 }
@@ -102,19 +91,7 @@ private fun SignUpContentsPreview() {
         SignUpContents(
             onShowSnackbar = { message ->
             },
-            nameInputText = "Isabel Robertson",
-            nameErrorMessage = "Dale Merrill",
-            emailInputText = "ora.joyner@example.com",
-            emailErrorMessage = "lidia.reed@example.com",
-            passwordInputText = "detracto",
-            passwordErrorMessage = "omittantur",
-            passwordConfirmInputText = "sea",
-            passwordConfirmErrorMessage = "facilisi",
-            buttonIsEnabled = false,
-            onNameValueChange = {},
-            onEmailValueChange = {},
-            onPasswordValueChange = {},
-            onPasswordConfirmValueChange = {},
+            signUpState = SignUpState(context = LocalContext.current),
             modifier = Modifier
         )
     }

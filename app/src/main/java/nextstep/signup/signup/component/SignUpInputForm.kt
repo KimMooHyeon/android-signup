@@ -39,7 +39,7 @@ fun SignUpInputForm(
     val isFocused = interactionSource.collectIsFocusedAsState().value
     var hasEverBeenFocused by remember { mutableStateOf(false) }
 
-    LaunchedEffect(hasEverBeenFocused) {
+    LaunchedEffect(isFocused) {
         if (isFocused) {
             hasEverBeenFocused = true // 포커스를 받으면 true로 설정
         }
@@ -62,9 +62,9 @@ fun SignUpInputForm(
             focusedContainerColor = Color(0xFFE3E8F1),
             unfocusedContainerColor = Color(0xFFE3E8F1)
         ),
-        isError = hasEverBeenFocused && errorMessage.isNotEmpty(),
+        isError = errorMessage.isNotEmpty() && hasEverBeenFocused,
         supportingText = {
-            if (hasEverBeenFocused && errorMessage.isNotEmpty()) {
+            if (errorMessage.isNotEmpty() && hasEverBeenFocused) {
                 Text(
                     text = errorMessage,
                     color = MaterialTheme.colorScheme.error,
